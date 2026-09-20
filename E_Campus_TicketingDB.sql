@@ -36,3 +36,18 @@ CREATE TABLE students (
     FOREIGN KEY (student_id)    REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
+
+
+-- Admin/official extended profile (hostel admin OR college official)
+CREATE TABLE staff (
+    staff_id        BIGINT PRIMARY KEY,             
+    designation     VARCHAR(100),                       
+    department_id   INT NULL,                            
+    hostel_id       INT NULL,                            
+    employee_code   VARCHAR(30) UNIQUE,
+    FOREIGN KEY (staff_id)      REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
+
+
+
