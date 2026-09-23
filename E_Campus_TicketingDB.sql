@@ -47,3 +47,29 @@ CREATE TABLE staff (
     FOREIGN KEY (staff_id)      REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
+
+
+
+-- 2. HOSTEL SECTION TABLES
+
+
+CREATE TABLE hostels (
+    hostel_id       INT AUTO_INCREMENT PRIMARY KEY,
+    hostel_name     VARCHAR(100) NOT NULL,
+    hostel_type     ENUM('boys', 'girls', 'co-ed') DEFAULT 'boys',
+    warden_id       BIGINT NULL,                          -- FK -> staff.staff_id
+    total_rooms     INT DEFAULT 0,
+    FOREIGN KEY (warden_id) REFERENCES staff(staff_id)
+);
+
+CREATE TABLE hostel_rooms (
+    room_id         INT AUTO_INCREMENT PRIMARY KEY,
+    hostel_id       INT NOT NULL,
+    room_number     VARCHAR(10) NOT NULL,
+    floor_no        TINYINT,
+    capacity        TINYINT DEFAULT 2,
+    occupied_count  TINYINT DEFAULT 0,
+    FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id),
+    UNIQUE (hostel_id, room_number)
+);
+
