@@ -72,3 +72,41 @@ ALTER TABLE students ADD FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id);
 ALTER TABLE students ADD FOREIGN KEY (room_id)   REFERENCES hostel_rooms(room_id);
 ALTER TABLE staff    ADD FOREIGN KEY (hostel_id) REFERENCES hostels(hostel_id);
 
+-- 3. TICKETING CORE
+
+-- A ticket can belong to either module — 'section' distinguishes routing
+CREATE TABLE ticket_categories (
+    category_id     INT AUTO_INCREMENT PRIMARY KEY,
+    section         ENUM('hostel', 'college_erp') NOT NULL,
+    category_name   VARCHAR(100) NOT NULL,
+    -- Hostel examples: Room Maintenance, Mess Complaint, Leave Request, Electrical/Plumbing, Ragging/Discipline
+    -- College ERP examples: Fee Issue, Exam Form, Certificate Request, ID Card, Result Correction, Scholarship, fine_issye
+    sla_hours       INT DEFAULT 72              
+);
+
+CREATE TABLE tickets (
+    ticket_id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ticket_code     VARCHAR(20) UNIQUE NOT NULL,   
+    section         ENUM('hostel', 'college_erp') NOT NULL,
+    raised_by       BIGINT NOT NULL,               
+    category_id     INT NOT NULL,
+    subject         VARCHAR(200) NOT NULL,
+    description     TEXT NOT NULL,
+    priority        ENUM('low', 'medium', 'high', 'urgent') DEFAULT 'medium',
+    status          ENUM('open', 'in_progress', 'on_hold', 'resolved', 'closed', 'reopened') DEFAULT 'open',
+    assigned_to     BIGINT NULL,                    
+    hostel_id       INT NULL,                         
+    room_id         INT NULL,                         
+    department_id   INT NULL,                         
+    due_at          TIMESTAMP NULL,
+    resolved_at     TIMESTAMP NULL,
+    closed_at       TIMESTAMP NULL,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (raised_by)     REFERENCES users(user_id),
+    FOREIGN KEY (assigned_to)   REFERENCES users(user_id),
+    FOREIGN KEY (category_id)   REFERENCES ticket_categories(category_id),
+    FOREIGN KEY (hostel_id)     REFERENCES hostels(hostel_id),
+    FOREIGN KEY (room_id)       REFERENCES hostel_rooms(room_id),
+    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+);
