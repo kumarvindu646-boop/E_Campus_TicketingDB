@@ -37,7 +37,7 @@ CREATE TABLE students (
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
 
--- Admin extended profile (hostel admin OR college staff)
+-- Admin panel extended profile (hostel admin OR college staff)
 CREATE TABLE staff (
     staff_id        BIGINT PRIMARY KEY,              
     designation     VARCHAR(100),                     
