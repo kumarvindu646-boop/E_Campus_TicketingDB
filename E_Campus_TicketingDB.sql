@@ -110,3 +110,4 @@ CREATE TABLE tickets (
     FOREIGN KEY (room_id)       REFERENCES hostel_rooms(room_id),
     FOREIGN KEY (department_id) REFERENCES departments(department_id)
 );
+-- student portal
